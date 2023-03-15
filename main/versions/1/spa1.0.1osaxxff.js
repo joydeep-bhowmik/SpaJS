@@ -193,7 +193,7 @@ class SPA{
     fetch(url_, args = null) {
         return new Promise(function(resolve, reject) {
             let url = url_;
-            let parameters,response,method;
+            let parameters,response,method,error;
             const xhttp = new XMLHttpRequest();
             xhttp.onerror = function(error){
                 reject(error);
@@ -225,7 +225,7 @@ class SPA{
                         }
                     }
                 }, false);
-            parameters=null;
+            parameters;
             if(args && args['data']){
                 parameters=new URLSearchParams(args['data']).toString();
             }
