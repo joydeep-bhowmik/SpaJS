@@ -234,7 +234,7 @@ class SPA{
             }
         
             if (method && method.toUpperCase()=='POST') {
-                if(parameters.length==0){
+                if(parameters.length!=0){
                     let urlArr=url.split('?');
                     url=urlArr[0];
                     parameters=urlArr[1];
@@ -252,7 +252,7 @@ class SPA{
                 }
                 xhttp.send(parameters);
             } else if (!method || method.toUpperCase()=='GET'){
-                if(parameters!=""){
+                if(parameters.length!=0){
                     xhttp.open("GET", url + "?" + parameters, true);
                 }else{
                     xhttp.open("GET", url, true);
