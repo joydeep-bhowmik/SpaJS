@@ -19,7 +19,9 @@ class SPA{
             this.saveFomResults=args['saveFomResults'];
         }
         this.script=false;
-
+        if(args && args['script']){
+            this.script=args['script'];
+        }
         this.executeScriptTags=false;
         if(args && args['executeexecuteScriptTags']){
             this.executeScriptTags=args['executeexecuteScriptTags'];
