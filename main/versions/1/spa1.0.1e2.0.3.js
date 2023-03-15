@@ -67,7 +67,7 @@ class SPA{
 
         let self=this;
         if(this.executeScript){
-            eval(this.executeScript);
+            this.executeScript
         }
         document.addEventListener('onurlchange',async function(){
             let url=window.location.href;
@@ -79,7 +79,7 @@ class SPA{
             }
             self.updateDOM(url);
             if(self.executeScript){
-                eval(self.executeScript);
+                self.executeScript;
             }
         })
     }
