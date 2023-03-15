@@ -5,7 +5,7 @@ class SPA{
     }
 
     init(args=null){
-        
+        this.clean(document);
         this.link='a';
         if(args && args['link']){
             this.link=args['link'];
@@ -14,17 +14,20 @@ class SPA{
         if(args && args['form']){
             this.form=args['form'];
         }
-        
+        this.saveFomResults=false;
+        if(args && args['saveFomResults']){
+            this.saveFomResults=args['saveFomResults'];
+        }
         this.executeScript=false;
         if(args && args['executeScript']){
             this.executeScript=args['executeScript'];
         }
         this.storage={};
-        // this.storage[window.location.href]=document.documentElement.innerHTML;
+        // this.storage[window.location.href]=document.querySelector('html');
+        // console.log(document.querySelector('html'))
         if(args && args['loader']){
             this.loader=args['loader'];
         }
-        this.clean(document);
         this.bindForm();
         let onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
@@ -180,6 +183,9 @@ class SPA{
             let response=await self.fetch(action,{method:method,data:data}).then(function(res){
                 return res;
             });
+            if(self.saveFomResults){
+                self.storage[window.location.href]=response;
+            }
             self.updateDOM(null,response)
         });
     }
