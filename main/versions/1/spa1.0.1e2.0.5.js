@@ -33,6 +33,37 @@ class SPA{
             this.loader=args['loader'];
         }
         this.bindForm();
+        this.scrollRestoration=true;
+        if(args && args['scrollRestoration']){
+            this.scrollRestoration=args['scrollRestoration'];
+        }
+        //save scroll position
+        window.addEventListener("scroll",function(){
+            //horizontal scroll
+            self.scrollPositionsX[document.URL]=window.pageXOffset;
+            //vertical scroll
+            self.scrollPositionsY[document.URL]=window.pageYOffset;
+        });
+        if(scrollRestoration){
+            //setting default scrollbehaviour of browser to manual on pushstate
+            document.addEventListener("onurlchange", function() {
+                var url=document.URL;
+                var axisY=self.scrollPositionsY[url];
+                var axisX=self.scrollPositionsX[url];
+                if(axisY==undefined){
+                    axisY=0;
+                }
+                if(axisX==undefined){
+                    axisX=0;
+                }
+                setTimeout(() => {
+                    window.scroll({
+                        top: axisY,
+                        left:axisX
+                      });
+                }, 0);
+            });
+        }
         let onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
             document.dispatchEvent(onurlchangeEvent);
