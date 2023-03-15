@@ -225,7 +225,7 @@ class SPA{
                         }
                     }
                 }, false);
-            parameters;
+            parameters="";
             if(args && args['data']){
                 parameters=new URLSearchParams(args['data']).toString();
             }
@@ -234,7 +234,7 @@ class SPA{
             }
         
             if (method && method.toUpperCase()=='POST') {
-                if(!parameters){
+                if(parameters.length==0){
                     let urlArr=url.split('?');
                     url=urlArr[0];
                     parameters=urlArr[1];
