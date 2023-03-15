@@ -94,7 +94,7 @@ class SPA{
                 return;
             }
             if (this.href != window.location.href) {
-                window.history.pushState({}, '', this.href);
+                window.history.pushState({}, '', this.href.replace(window.location.origin,""));
                 document.dispatchEvent(onurlchangeEvent);
             }
         });
