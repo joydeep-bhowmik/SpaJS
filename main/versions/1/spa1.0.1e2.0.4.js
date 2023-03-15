@@ -18,13 +18,11 @@ class SPA{
         if(args && args['saveFomResults']){
             this.saveFomResults=args['saveFomResults'];
         }
-        this.executeScript=false;
-        if(args && args['executeScript']){
-            this.executeScript=args['executeScript'];
-        }
+        this.script=false;
+
         this.executeScriptTags=false;
-        if(args && args['executeScriptTags']){
-            this.executeScriptTags=args['executeScriptTags'];
+        if(args && args['executeexecuteScriptTags']){
+            this.executeScriptTags=args['executeexecuteScriptTags'];
         }
         this.storage={};
         // this.storage[window.location.href]=document.querySelector('html');
@@ -66,8 +64,8 @@ class SPA{
         });
 
         let self=this;
-        if(this.executeScript){
-            this.executeScript
+        if(this.script){
+            this.script()
         }
         document.addEventListener('onurlchange',async function(){
             let url=window.location.href;
@@ -78,8 +76,8 @@ class SPA{
                 self.storage[url]=response;
             }
             self.updateDOM(url);
-            if(self.executeScript){
-                self.executeScript;
+            if(self.script){
+                self.script();
             }
         })
     }
@@ -130,7 +128,7 @@ class SPA{
         this.reorderKeys(vdom,document.documentElement);
         this.diff(vdom,document.documentElement);
         vdom.remove();
-        if(this.executeScript){
+        if(this.executeScriptTags){
             document.querySelectorAll('script').forEach(function(scriptTag,i){
                 if(scriptTag.hasAttribute('spa-script')) return;
                 if(scriptTag.hasAttribute('src')){
