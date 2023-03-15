@@ -27,6 +27,8 @@ class SPA{
             this.executeScriptTags=args['executeexecuteScriptTags'];
         }
         this.storage={};
+        this.scrollPositionsX={};
+        this.scrollPositionsY={};
         // this.storage[window.location.href]=document.querySelector('html');
         // console.log(document.querySelector('html'))
         if(args && args['loader']){
@@ -46,6 +48,7 @@ class SPA{
         });
         if(this.scrollRestoration){
             //setting default scrollbehaviour of browser to manual on pushstate
+            let self=this;
             document.addEventListener("onurlchange", function() {
                 var url=document.URL;
                 var axisY=self.scrollPositionsY[url];
