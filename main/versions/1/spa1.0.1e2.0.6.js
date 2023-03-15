@@ -44,7 +44,7 @@ class SPA{
             //vertical scroll
             self.scrollPositionsY[document.URL]=window.pageYOffset;
         });
-        if(scrollRestoration){
+        if(this.scrollRestoration){
             //setting default scrollbehaviour of browser to manual on pushstate
             document.addEventListener("onurlchange", function() {
                 var url=document.URL;
