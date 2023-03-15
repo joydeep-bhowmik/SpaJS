@@ -20,7 +20,8 @@ class SPA{
             this.executeScript=args['executeScript'];
         }
         this.storage={};
-        // this.storage[window.location.href]=document.documentElement.innerHTML;
+        this.storage[window.location.href]=document.documentElement.innerHTML;
+        console.log(document.documentElement.innerHTML)
         if(args && args['loader']){
             this.loader=args['loader'];
         }
@@ -169,12 +170,12 @@ class SPA{
             let action=this.getAttribute('action');
             let method=this.getAttribute('method');
             let data=self.serialize(this);
-            if(!action) action=window.location.href;
             if(method.toLowerCase()=='get'){
                 let parameters=new URLSearchParams(data).toString();
-                let url=window.location.pathname+'?'+parameters;
+                let url=window.location.pathname+action+'?'+parameters;
                 window.history.pushState({}, '', url);
             }
+            if(!action) action=window.location.href;
             let response=await self.fetch(action,{method:method,data:data}).then(function(res){
                 return res;
             });
