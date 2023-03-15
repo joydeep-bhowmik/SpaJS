@@ -22,6 +22,10 @@ class SPA{
         if(args && args['executeScript']){
             this.executeScript=args['executeScript'];
         }
+        this.executeScriptTags=false;
+        if(args && args['executeScriptTags']){
+            this.executeScriptTags=args['executeScriptTags'];
+        }
         this.storage={};
         // this.storage[window.location.href]=document.querySelector('html');
         // console.log(document.querySelector('html'))
@@ -62,6 +66,9 @@ class SPA{
         });
 
         let self=this;
+        if(this.executeScript){
+            eval(this.executeScript);
+        }
         document.addEventListener('onurlchange',async function(){
             let url=window.location.href;
             if(!self.storage[url]){
@@ -70,7 +77,10 @@ class SPA{
                 });
                 self.storage[url]=response;
             }
-            self.updateDOM(url)
+            self.updateDOM(url);
+            if(self.executeScript){
+                eval(self.executeScript);
+            }
         })
     }
     reorderKeys(vdom,dom){
