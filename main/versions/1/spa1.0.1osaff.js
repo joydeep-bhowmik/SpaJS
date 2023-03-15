@@ -28,6 +28,9 @@ class SPA{
         this.clean(document);
         this.bindForm();
         let onurlchangeEvent = new Event("onurlchange");
+        window.addEventListener('popstate',function(){
+            document.dispatchEvent(onurlchangeEvent);
+        });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
         this.live(this.link, "click", function(e) {
@@ -55,9 +58,7 @@ class SPA{
                 document.dispatchEvent(onurlchangeEvent);
             }
         });
-        window.onpopstate = function() {
-            document.dispatchEvent(onurlchangeEvent);
-        }
+
         let self=this;
         document.addEventListener('onurlchange',async function(){
             let url=window.location.href;
@@ -173,6 +174,7 @@ class SPA{
             if(method.toLowerCase()=='get'){
                 let parameters=new URLSearchParams(data).toString();
                 let url=action+'?'+parameters;
+                console.log(url)
                 window.history.pushState({}, '', url);
             }
             if(!action) action=window.location.href;
