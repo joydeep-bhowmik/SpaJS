@@ -172,7 +172,7 @@ class SPA{
             let data=self.serialize(this);
             if(method.toLowerCase()=='get'){
                 let parameters=new URLSearchParams(data).toString();
-                let url=window.location.pathname+action+'?'+parameters;
+                let url=action+'?'+parameters;
                 window.history.pushState({}, '', url);
             }
             if(!action) action=window.location.href;
