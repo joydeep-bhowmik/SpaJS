@@ -343,7 +343,9 @@ class SPA{
         Object.keys(domAttributes).forEach((key, i) => {
             //if the attribute is not present in vdom than remove it
             //for chrome bug [showing value after removing value attribute]
-            dom.setAttribute(key," ")
+            if(key=='value'){
+                dom.setAttribute(key," ")
+            }
             if (!vdom.getAttribute(key)) {
                 dom.removeAttribute(key);
             }
