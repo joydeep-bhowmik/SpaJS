@@ -20,7 +20,7 @@ class SPA{
             this.executeScript=args['executeScript'];
         }
         this.storage={};
-        this.storage[window.location.href]=document.documentElement.innerHTML;
+        // this.storage[window.location.href]=document.documentElement.innerHTML;
         if(args && args['loader']){
             this.loader=args['loader'];
         }
