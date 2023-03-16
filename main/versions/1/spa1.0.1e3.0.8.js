@@ -93,14 +93,9 @@ class SPA{
                 window.open(this.href, "_self");
                 return;
             }
-            let link=this.href.replace(window.location.origin,"").trim();
-            if(link==window.location.origin){
-                link='/';
-            }
-
-            this.setAttribute('href',link);
+            this.setAttribute('href',this.href.replace(window.location.origin,"").trim());
             if (this.href != window.location.href) {
-                window.history.pushState({}, '', link);
+                window.history.pushState({}, '', this.getAttribute('href'));
                 document.dispatchEvent(onurlchangeEvent);
             }
         });
