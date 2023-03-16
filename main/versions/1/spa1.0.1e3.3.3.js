@@ -235,20 +235,18 @@ class SPA{
             if(method.toLowerCase()=='get'){
                 let parameters=new URLSearchParams(data).toString();
                 url=action+'?'+parameters;
-                if (url != window.location.href) {
-                    window.history.pushState({}, '', url);
-                    document.dispatchEvent(self.onurlchangeEvent);
-                }
-            }else{
-                if(!action) action=window.location.href;
-                let response=await self.fetch(action,{method:method,data:data}).then(function(res){
-                    return res;
-                });
-                if(self.saveFomResults){
-                    self.storage[window.location.pathname+url]=response;
-                }
-                self.updateDOM(null,response)
-            }        
+                window.history.pushState({}, '', url);
+                document.dispatchEvent(self.onurlchangeEvent);
+            }
+            if(!action) action=window.location.href;
+            let response=await self.fetch(action,{method:method,data:data}).then(function(res){
+                return res;
+            });
+            if(self.saveFomResults){
+                self.storage[window.location.pathname+url]=response;
+            }
+            self.updateDOM(null,response)
+      
         });
     }
 
