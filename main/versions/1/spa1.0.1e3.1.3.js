@@ -6,12 +6,16 @@ class SPA{
 
     init(args=null){
         this.requestStart=function(){};
-        this.requestEnd=function(){};
+        this.requestComplete=function(){};
+        this.requestError=function(){};
         if(args && args['requestStart']){
             this.requestStart=args['requestStart'];
         }
-        if(args && args['requestEnd']){
-            this.requestEnd=args['requestEnd'];
+        if(args && args['requestComplete']){
+            this.requestComplete=args['requestComplete'];
+        }
+        if(args && args['requestError']){
+            this.requestError=args['requestError'];
         }
         this.clean(document);
         this.link='a';
@@ -101,7 +105,13 @@ class SPA{
                 return;
             }
             if (this.href != window.location.href) {
-                window.history.pushState({}, '', this.href);
+                // https://codegleam.blogspot.com/
+                let link=this.href;
+                if(link.includes(window.location.origin)){
+                    let urlObj = new URL(link);
+                    link = urlObj.href.replace(urlObj.origin, '');
+                }
+                window.history.pushState({}, '',link);
                 document.dispatchEvent(onurlchangeEvent);
             }
         });
@@ -128,13 +138,13 @@ class SPA{
         //remove unmatched keys from dom
         for(let i=0;i<dom.children.length;i++){
             let dnode=dom.children[i];
-            if(dnode.hasAttribute('@key')){
-                let key=dnode.getAttribute('@key');
-                if(vdom.querySelectorAll(':scope > [@key="'+key+'"]').length>1){
-                    throw `keys must be unique among siblings. Duplicate key found @key=${key}`;
+            if(dnode.hasAttribute('s-key')){
+                let key=dnode.getAttribute('s-key');
+                if(vdom.querySelectorAll(':scope > [s-key="'+key+'"]').length>1){
+                    throw `keys must be unique among siblings. Duplicate key found s-key=${key}`;
                 }
                 //if the key is not present in vdom then remove it
-                if(!vdom.querySelector(':scope > [@key="'+key+'"]')){
+                if(!vdom.querySelector(':scope > [s-key="'+key+'"]')){
                     dnode.remove();
                 }
             }
@@ -142,10 +152,10 @@ class SPA{
         //adding keys to dom
         for(let i=0;i<vdom.children.length;i++){
             let  vnode=vdom.children[i];
-            if( vnode.hasAttribute('@key')){
-                let key= vnode.getAttribute('@key');
+            if( vnode.hasAttribute('s-key')){
+                let key= vnode.getAttribute('s-key');
                 
-                if(dom.querySelector(':scope> [@key="'+key+'"]')){
+                if(dom.querySelector(':scope> [s-key="'+key+'"]')){
 
                 }else{
                     //if key is not present in dom then add it
@@ -245,7 +255,8 @@ class SPA{
 
     fetch(url_, args = null) {
         let requestStart=this.requestStart;
-        let requestEnd=this.requestEnd;
+        let requestComplete=this.requestComplete;
+        let requestError=this.requestError;
         requestStart();
         return new Promise(function(resolve, reject) {
             let url = url_;
@@ -260,17 +271,11 @@ class SPA{
                     response = this.responseText;
                     //response = decodeURIComponent(response);
                     resolve(response);
-                    requestEnd(response);
+                    requestComplete(response);
                 } else {
-                    if (this.status == 403) {
-                        error = url + " 403 (Forbidden)";
-                    } else if (this.status == 404) {
-                        error = url + " 400 (Page not found)";
-                    } else {
-                        error = this.status;
-                    }
-                    reject(error);
-                    requestEnd(error);
+                    this.status
+                    reject(this.status);
+                    requestError(this.status);
                 }
             };
             // Download progress
