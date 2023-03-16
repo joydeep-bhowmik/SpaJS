@@ -242,7 +242,7 @@ class SPA{
                 return res;
             });
             if(self.saveFomResults){
-                self.storage[window.location.href]=response;
+                self.storage[window.location.pathname+url]=response;
             }
             self.updateDOM(null,response)
         });
