@@ -258,7 +258,7 @@ class SPA{
         return new Promise(function(resolve, reject) {
             let url = url_;
             let parameters,response,method,error;
-            xhttp=this.xhttp;
+            let xhttp=this.xhttp;
             xhttp.onerror = function(error){
                 reject(error);
             }
