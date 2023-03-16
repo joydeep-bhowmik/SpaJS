@@ -228,7 +228,9 @@ class SPA{
             if(method.toLowerCase()=='get'){
                 let parameters=new URLSearchParams(data).toString();
                 let url=action+'?'+parameters;
-                window.history.pushState({}, '', url);
+                if (url != window.location.href) {
+                    window.history.pushState({}, '', url);
+                }
             }
             if(!action) action=window.location.href;
             let response=await self.fetch(action,{method:method,data:data}).then(function(res){
