@@ -6,7 +6,6 @@ class SPA{
 
     init(args=null){
         this.clean(document);
-        
         this.link='a';
         if(args && args['link']){
             this.link=args['link'];
@@ -30,13 +29,11 @@ class SPA{
         this.storage={};
         this.scrollPositionsX={};
         this.scrollPositionsY={};
-        // this.storage[window.location.href]=document.querySelector('html');
-        // console.log(document.querySelector('html'))
+        this.storage[window.location.href]=document.documentElement.outerHTML;
         if(args && args['loader']){
             this.loader=args['loader'];
         }
         this.bindForm();
-        this.removeOriginFromLink();
         this.scrollRestoration=true;
         if(args && args['scrollRestoration']){
             this.scrollRestoration=args['scrollRestoration'];
@@ -166,7 +163,6 @@ class SPA{
         this.reorderKeys(vdom,document.documentElement);
         this.diff(vdom,document.documentElement);
         vdom.remove();
-        this.removeOriginFromLink();
         if(this.executeScriptTags){
             document.querySelectorAll('script').forEach(function(scriptTag,i){
                 if(scriptTag.hasAttribute('spa-script')) return;
@@ -191,14 +187,7 @@ class SPA{
             })
         }
     }
-    removeOriginFromLink(){
-        document.querySelectorAll(this.link).forEach(function(a){
-            let link=a.getAttribute('href');
-            if(link.includes(window.location.origin)){
-                a.setAttribute('href',link.replace(window.location.origin,""))
-            }
-        })
-    }
+
     live(selector, evt, handler) {
         document.addEventListener(evt, function(event) {
             if (event.target.matches(selector + ', ' + selector + ' *')) {
