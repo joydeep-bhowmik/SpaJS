@@ -6,6 +6,7 @@ class SPA{
 
     init(args=null){
         this.clean(document);
+        
         this.link='a';
         if(args && args['link']){
             this.link=args['link'];
@@ -35,6 +36,7 @@ class SPA{
             this.loader=args['loader'];
         }
         this.bindForm();
+        this.removeOriginFromLink();
         this.scrollRestoration=true;
         if(args && args['scrollRestoration']){
             this.scrollRestoration=args['scrollRestoration'];
@@ -164,7 +166,7 @@ class SPA{
         this.reorderKeys(vdom,document.documentElement);
         this.diff(vdom,document.documentElement);
         vdom.remove();
-        this.removeOriginFromLink()
+        this.removeOriginFromLink();
         if(this.executeScriptTags){
             document.querySelectorAll('script').forEach(function(scriptTag,i){
                 if(scriptTag.hasAttribute('spa-script')) return;
