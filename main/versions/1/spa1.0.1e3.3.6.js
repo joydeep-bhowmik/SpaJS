@@ -232,27 +232,27 @@ class SPA{
             let method=this.getAttribute('method');
             let data=self.serialize(this);
             let url="";
+            let parameters=new URLSearchParams(data).toString();
             if(method.toLowerCase()=='get'){
-                let parameters=new URLSearchParams(data).toString();
                 url=action+'?'+parameters;
                 if(window.location.pathname+'?'+parameters!=window.location.href){
                     window.history.pushState({}, '', url);
                 }
-            }
-            if(!action) action=window.location.href;
-            let response="";
-            if(!self.storage[window.location.pathname+'?'+parameters]){
-                response=await self.fetch(action,{method:method,data:data}).then(function(res){
+                if(self.saveFomResults){
+                    document.dispatchEvent(self.onurlchangeEvent);
+                }else{
+                    let response=await self.fetch(action,{method:method,data:data}).then(function(res){
+                        return res;
+                    });
+                    self.updateDOM(null,response)
+                }
+            }else{
+                if(!action) action=window.location.href;
+                let response=await self.fetch(action,{method:method,data:data}).then(function(res){
                     return res;
                 });
-                if(self.saveFomResults){
-                    self.storage[window.location.pathname+'?'+parameters]=response;
-                }
                 self.updateDOM(null,response)
-            }else{
-                self.updateDOM(window.location.pathname+'?'+parameters)  
             }
-
         });
     }
 
