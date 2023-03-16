@@ -8,6 +8,7 @@ class SPA{
         this.requestStart=function(){};
         this.requestComplete=function(){};
         this.requestError=function(){};
+        this.xhttp = new XMLHttpRequest();
         if(args && args['requestStart']){
             this.requestStart=args['requestStart'];
         }
@@ -78,7 +79,6 @@ class SPA{
                 }, 0);
             });
         }
-        let self=this;
         let onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
             document.dispatchEvent(onurlchangeEvent);
@@ -86,7 +86,6 @@ class SPA{
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
         this.live(this.link, "click", function(e) {
-            self.lastURL=this.href;
             //basically if a link has onclick attribute the route will not work for it
             let clickattr = this.getAttribute('onclick');
             if (clickattr) return;
@@ -113,11 +112,13 @@ class SPA{
             }
         });
 
+        let self=this;
         if(this.script){
             this.script()
         }
         document.addEventListener('onurlchange',async function(){
-            let url=self.lastURL;
+            self.xhttp.abort(); 
+            let url=window.location.href;
             if(!self.storage[url]){
                 let response=await self.fetch(url).then(function(res){ return res}).catch(function(error){
                     console.error(error);
@@ -257,7 +258,7 @@ class SPA{
         return new Promise(function(resolve, reject) {
             let url = url_;
             let parameters,response,method,error;
-            const xhttp = new XMLHttpRequest();
+            xhttp=this.xhttp;
             xhttp.onerror = function(error){
                 reject(error);
             }
