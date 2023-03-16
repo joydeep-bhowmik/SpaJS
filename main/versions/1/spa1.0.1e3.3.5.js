@@ -235,20 +235,22 @@ class SPA{
             if(method.toLowerCase()=='get'){
                 let parameters=new URLSearchParams(data).toString();
                 url=action+'?'+parameters;
-                window.history.pushState({}, '', url);
+                if(window.location.pathname+'?'+parameters!=window.location.href){
+                    window.history.pushState({}, '', url);
+                }
             }
             if(!action) action=window.location.href;
             let response="";
-            if(!self.storage[window.location.pathname+url]){
+            if(!self.storage[window.location.pathname+'?'+parameters]){
                 response=await self.fetch(action,{method:method,data:data}).then(function(res){
                     return res;
                 });
                 if(self.saveFomResults){
-                    self.storage[window.location.pathname+url]=response;
+                    self.storage[window.location.pathname+'?'+parameters]=response;
                 }
                 self.updateDOM(null,response)
             }else{
-                self.updateDOM(window.location.pathname+url)  
+                self.updateDOM(window.location.pathname+'?'+parameters)  
             }
 
         });
