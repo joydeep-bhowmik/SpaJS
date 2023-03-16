@@ -106,13 +106,8 @@ class SPA{
             }
             if (this.href != window.location.href) {
                 // https://codegleam.blogspot.com/
-                let link=this.href;
-                if(link.includes(window.location.origin)){
-                    let urlObj = new URL(link);
-                    link = urlObj.href.replace(urlObj.origin, '');
-                }
-                console.log(link)
-                window.history.pushState({}, '',link);
+                let urlObj = new URL(this.href);;
+                window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
                 document.dispatchEvent(onurlchangeEvent);
             }
         });
