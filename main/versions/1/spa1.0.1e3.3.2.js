@@ -108,7 +108,7 @@ class SPA{
             if (this.href != window.location.href) {
                 let urlObj = new URL(this.href);;
                 window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
-                document.dispatchEvent(self.onurlchangeEvent);
+                 document.dispatchEvent(self.onurlchangeEvent);
             }
            
         });
@@ -239,15 +239,16 @@ class SPA{
                     window.history.pushState({}, '', url);
                     document.dispatchEvent(self.onurlchangeEvent);
                 }
-            // if(!action) action=window.location.href;
-            // let response=await self.fetch(action,{method:method,data:data}).then(function(res){
-            //     return res;
-            // });
-            // if(self.saveFomResults){
-            //     self.storage[window.location.pathname+url]=response;
-            // }
-            // self.updateDOM(null,response)
-        }
+            }else{
+                if(!action) action=window.location.href;
+                let response=await self.fetch(action,{method:method,data:data}).then(function(res){
+                    return res;
+                });
+                if(self.saveFomResults){
+                    self.storage[window.location.pathname+url]=response;
+                }
+                self.updateDOM(null,response)
+            }        
         });
     }
 
