@@ -5,6 +5,14 @@ class SPA{
     }
 
     init(args=null){
+        this.requestStart=function(){};
+        this.requestEnd=function(){};
+        if(args && args['requestStart']){
+            this.requestStart=args['requestStart'];
+        }
+        if(args && args['requestEnd']){
+            this.requestEnd=args['requestEnd'];
+        }
         this.clean(document);
         this.link='a';
         if(args && args['link']){
@@ -220,7 +228,6 @@ class SPA{
             if(method.toLowerCase()=='get'){
                 let parameters=new URLSearchParams(data).toString();
                 let url=action+'?'+parameters;
-                console.log(url)
                 window.history.pushState({}, '', url);
             }
             if(!action) action=window.location.href;
@@ -235,6 +242,9 @@ class SPA{
     }
 
     fetch(url_, args = null) {
+        let requestStart=this.requestStart;
+        let requestEnd=this.requestEnd;
+        requestStart();
         return new Promise(function(resolve, reject) {
             let url = url_;
             let parameters,response,method,error;
@@ -248,6 +258,7 @@ class SPA{
                     response = this.responseText;
                     //response = decodeURIComponent(response);
                     resolve(response);
+                    requestEnd(response);
                 } else {
                     if (this.status == 403) {
                         error = url + " 403 (Forbidden)";
@@ -257,6 +268,7 @@ class SPA{
                         error = this.status;
                     }
                     reject(error);
+                    requestEnd(error);
                 }
             };
             // Download progress
@@ -282,7 +294,6 @@ class SPA{
                     let urlArr=url.split('?');
                     url=urlArr[0];
                     parameters=urlArr[1];
-                    console.log(urlArr)
                 }
                 
                 xhttp.open("POST", url, true);
@@ -420,7 +431,6 @@ class SPA{
                 //if the node is not present in dom append it
                 if (dom.childNodes[i] == undefined) {
                     dom.append(vdom.childNodes[i].cloneNode(true));
-                    // console.log("appenidng",vdom.childNodes[i])
                 } else if (this.getnodeType(vdom.childNodes[i]) == this.getnodeType(dom.childNodes[i])) {
                     //if same node type
                     //if the nodeType is text
