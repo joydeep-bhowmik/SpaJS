@@ -111,6 +111,7 @@ class SPA{
                     let urlObj = new URL(link);
                     link = urlObj.href.replace(urlObj.origin, '');
                 }
+                console.log(link)
                 window.history.pushState({}, '',link);
                 document.dispatchEvent(onurlchangeEvent);
             }
