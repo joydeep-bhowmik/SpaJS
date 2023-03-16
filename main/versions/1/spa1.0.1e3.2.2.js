@@ -78,11 +78,9 @@ class SPA{
                 }, 0);
             });
         }
-        let self=this;
-        // let onurlchangeEvent = new Event("onurlchange");
+        let onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
-            // document.dispatchEvent(onurlchangeEvent);
-            self.getContent(this.window.href);
+            document.dispatchEvent(onurlchangeEvent);
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
@@ -109,27 +107,27 @@ class SPA{
             if (this.href != window.location.href) {
                 let urlObj = new URL(this.href);;
                 window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
-                // document.dispatchEvent(onurlchangeEvent);
-                self.getContent(this.href);
+                document.dispatchEvent(onurlchangeEvent);
             }
         });
 
+        let self=this;
         if(this.script){
             this.script()
         }
-    }
-    async getContent(url){
-        if(!this.storage[url]){
-            let response=await this.fetch(url).then(function(res){ return res}).catch(function(error){
-                console.error(error);
-            });
-            this.storage[url]=response;
-        }
-        this.updateDOM(url);
-        if(this.script){
-            this.script();
-        }
-        return true;
+        document.addEventListener('onurlchange',async function(){
+            let url=window.location.href;
+            if(!self.storage[url]){
+                let response=await self.fetch(url).then(function(res){ return res}).catch(function(error){
+                    console.error(error);
+                });
+                self.storage[url]=response;
+            }
+            self.updateDOM(url);
+            if(self.script){
+                self.script();
+            }
+        })
     }
     reorderKeys(vdom,dom){
         //remove unmatched keys from dom
