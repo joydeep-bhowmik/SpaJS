@@ -5,6 +5,7 @@ class SPA{
     }
 
     init(args=null){
+        let self=this;
         this.requestStart=function(){};
         this.requestComplete=function(){};
         this.requestError=function(){};
@@ -80,7 +81,7 @@ class SPA{
         }
         this.onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
-            document.dispatchEvent(this.onurlchangeEvent);
+            document.dispatchEvent(self.onurlchangeEvent);
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
@@ -107,11 +108,10 @@ class SPA{
             if (this.href != window.location.href) {
                 let urlObj = new URL(this.href);;
                 window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
-                document.dispatchEvent(this.onurlchangeEvent);
+                document.dispatchEvent(self.onurlchangeEvent);
             }
         });
 
-        let self=this;
         if(this.script){
             this.script()
         }
