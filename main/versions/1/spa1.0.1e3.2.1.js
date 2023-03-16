@@ -85,6 +85,7 @@ class SPA{
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
+        let self=this;
         this.live(this.link, "click", function(e) {
             //basically if a link has onclick attribute the route will not work for it
             let clickattr = this.getAttribute('onclick');
@@ -109,7 +110,7 @@ class SPA{
                 let urlObj = new URL(this.href);;
                 window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
                 // document.dispatchEvent(onurlchangeEvent);
-                this.getContent(this.href);
+                self.getContent(this.href);
             }
         });
 
