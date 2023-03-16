@@ -94,7 +94,7 @@ class SPA{
                 return;
             }
             if (this.href != window.location.href) {
-                if(this.href=window.location.origin) {this.href=""}
+                if(this.href=window.location.origin) {this.href="/"}
                 window.history.pushState({}, '', this.href);
                 document.dispatchEvent(onurlchangeEvent);
             }
