@@ -78,14 +78,14 @@ class SPA{
                 }, 0);
             });
         }
+        let self=this;
         // let onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
             // document.dispatchEvent(onurlchangeEvent);
-            this.getContent(this.window.href);
+            self.getContent(this.window.href);
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
-        let self=this;
         this.live(this.link, "click", function(e) {
             //basically if a link has onclick attribute the route will not work for it
             let clickattr = this.getAttribute('onclick');
