@@ -236,17 +236,21 @@ class SPA{
                 let parameters=new URLSearchParams(data).toString();
                 url=action+'?'+parameters;
                 window.history.pushState({}, '', url);
-                document.dispatchEvent(self.onurlchangeEvent);
             }
             if(!action) action=window.location.href;
-            let response=await self.fetch(action,{method:method,data:data}).then(function(res){
-                return res;
-            });
-            if(self.saveFomResults){
-                self.storage[window.location.pathname+url]=response;
+            let response="";
+            if(!self.storage[window.location.pathname+url]){
+                response=await self.fetch(action,{method:method,data:data}).then(function(res){
+                    return res;
+                });
+                if(self.saveFomResults){
+                    self.storage[window.location.pathname+url]=response;
+                }
+                self.updateDOM(null,response)
+            }else{
+                self.updateDOM(window.location.pathname+url)  
             }
-            self.updateDOM(null,response)
-      
+
         });
     }
 
