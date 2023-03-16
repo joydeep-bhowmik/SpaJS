@@ -78,9 +78,9 @@ class SPA{
                 }, 0);
             });
         }
-        let onurlchangeEvent = new Event("onurlchange");
+        this.onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
-            document.dispatchEvent(onurlchangeEvent);
+            document.dispatchEvent(this.onurlchangeEvent);
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
@@ -107,7 +107,7 @@ class SPA{
             if (this.href != window.location.href) {
                 let urlObj = new URL(this.href);;
                 window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
-                document.dispatchEvent(onurlchangeEvent);
+                document.dispatchEvent(this.onurlchangeEvent);
             }
         });
 
@@ -236,7 +236,7 @@ class SPA{
                 url=action+'?'+parameters;
                 if (url != window.location.href) {
                     window.history.pushState({}, '', url);
-                    document.dispatchEvent(onurlchangeEvent);
+                    document.dispatchEvent(self.onurlchangeEvent);
                 }
             
             // if(!action) action=window.location.href;
