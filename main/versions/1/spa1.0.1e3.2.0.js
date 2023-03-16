@@ -109,7 +109,7 @@ class SPA{
                 let urlObj = new URL(this.href);;
                 window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
                 // document.dispatchEvent(onurlchangeEvent);
-                this.getContent(url);
+                this.getContent(this.href);
             }
         });
 
