@@ -93,9 +93,8 @@ class SPA{
                 window.open(this.href, "_self");
                 return;
             }
-            this.setAttribute('href',this.href.replace(window.location.origin,"").trim());
             if (this.href != window.location.href) {
-                window.history.pushState({}, '', this.getAttribute('href'));
+                window.history.pushState({}, '', this.href);
                 document.dispatchEvent(onurlchangeEvent);
             }
         });
@@ -165,6 +164,7 @@ class SPA{
         this.reorderKeys(vdom,document.documentElement);
         this.diff(vdom,document.documentElement);
         vdom.remove();
+        this.removeOriginFromLink()
         if(this.executeScriptTags){
             document.querySelectorAll('script').forEach(function(scriptTag,i){
                 if(scriptTag.hasAttribute('spa-script')) return;
@@ -188,6 +188,14 @@ class SPA{
                 }
             })
         }
+    }
+    removeOriginFromLink(){
+        document.querySelectorAll(this.link).forEach(function(a){
+            let link=a.getAttribute('href');
+            if(link.includes(window.location.origin)){
+                a.setAttribute('href',link.replace(window.location.origin,""))
+            }
+        })
     }
     live(selector, evt, handler) {
         document.addEventListener(evt, function(event) {
