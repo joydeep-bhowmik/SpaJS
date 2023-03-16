@@ -230,9 +230,10 @@ class SPA{
             let action=this.getAttribute('action');
             let method=this.getAttribute('method');
             let data=self.serialize(this);
+            let url="";
             if(method.toLowerCase()=='get'){
                 let parameters=new URLSearchParams(data).toString();
-                let url=action+'?'+parameters;
+                url=action+'?'+parameters;
                 if (url != window.location.href) {
                     window.history.pushState({}, '', url);
                 }
