@@ -8,7 +8,6 @@ class SPA{
         this.requestStart=function(){};
         this.requestComplete=function(){};
         this.requestError=function(){};
-        this.xhttp = new XMLHttpRequest();
         if(args && args['requestStart']){
             this.requestStart=args['requestStart'];
         }
@@ -117,7 +116,6 @@ class SPA{
             this.script()
         }
         document.addEventListener('onurlchange',async function(){
-            self.xhttp.abort(); 
             let url=window.location.href;
             if(!self.storage[url]){
                 let response=await self.fetch(url).then(function(res){ return res}).catch(function(error){
@@ -258,7 +256,7 @@ class SPA{
         return new Promise(function(resolve, reject) {
             let url = url_;
             let parameters,response,method,error;
-            let xhttp=this.xhttp;
+            const xhttp = new XMLHttpRequest();
             xhttp.onerror = function(error){
                 reject(error);
             }
