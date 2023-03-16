@@ -78,6 +78,7 @@ class SPA{
                 }, 0);
             });
         }
+        let self=this;
         let onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
             document.dispatchEvent(onurlchangeEvent);
@@ -85,6 +86,7 @@ class SPA{
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
         this.live(this.link, "click", function(e) {
+            self.lastURL=this.href;
             //basically if a link has onclick attribute the route will not work for it
             let clickattr = this.getAttribute('onclick');
             if (clickattr) return;
@@ -105,19 +107,17 @@ class SPA{
                 return;
             }
             if (this.href != window.location.href) {
-                // https://codegleam.blogspot.com/
                 let urlObj = new URL(this.href);;
                 window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
                 document.dispatchEvent(onurlchangeEvent);
             }
         });
 
-        let self=this;
         if(this.script){
             this.script()
         }
         document.addEventListener('onurlchange',async function(){
-            let url=window.location.href;
+            let url=self.lastURL;
             if(!self.storage[url]){
                 let response=await self.fetch(url).then(function(res){ return res}).catch(function(error){
                     console.error(error);
