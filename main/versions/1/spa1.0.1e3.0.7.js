@@ -93,12 +93,13 @@ class SPA{
                 window.open(this.href, "_self");
                 return;
             }
+            let link=this.href.replace(window.location.origin,"").trim();
+            if(link==window.location.origin){
+                link='/';
+            }
+
+            this.setAttribute('href',link);
             if (this.href != window.location.href) {
-                let link=this.href.replace(window.location.origin,"").trim();
-                if(link==window.location.origin){
-                    link='/';
-                }
-                console.log(link,this.href)
                 window.history.pushState({}, '', link);
                 document.dispatchEvent(onurlchangeEvent);
             }
