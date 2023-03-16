@@ -108,8 +108,9 @@ class SPA{
             if (this.href != window.location.href) {
                 let urlObj = new URL(this.href);;
                 window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
+                document.dispatchEvent(self.onurlchangeEvent);
             }
-            document.dispatchEvent(self.onurlchangeEvent);
+           
         });
 
         if(this.script){
@@ -236,8 +237,8 @@ class SPA{
                 url=action+'?'+parameters;
                 if (url != window.location.href) {
                     window.history.pushState({}, '', url);
+                    document.dispatchEvent(self.onurlchangeEvent);
                 }
-                document.dispatchEvent(self.onurlchangeEvent);
             // if(!action) action=window.location.href;
             // let response=await self.fetch(action,{method:method,data:data}).then(function(res){
             //     return res;
