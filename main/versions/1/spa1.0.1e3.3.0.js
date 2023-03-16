@@ -275,6 +275,9 @@ class SPA{
                     requestError(this.status);
                 }
             };
+            document.addEventListener('onurlchange',function(){
+                xhttp.abort();
+            });
             // Download progress
             xhttp.addEventListener("progress", function(evt){
                 if (evt.lengthComputable) {
