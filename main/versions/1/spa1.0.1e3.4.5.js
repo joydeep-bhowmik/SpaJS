@@ -80,10 +80,15 @@ class SPA{
             });
         }
         this.onurlchangeEvent = new Event("onurlchange");
+        let current_hash=window.location.hash;
         window.addEventListener('popstate',function(e){
             //if its  hashchnage the statewill e null
-
+            if (e.target.location.hash ==current_hash ){
                 document.dispatchEvent(self.onurlchangeEvent);
+             } else {
+               current_hash = ev.target.location.hash;
+             }
+               
             
         });
         //let spapercentComplete = new Event("spapercentComplete");
