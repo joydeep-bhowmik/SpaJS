@@ -81,11 +81,16 @@ class SPA{
         }
         this.onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
+            //return if link is only hash
+            if(window.location.href.replace(window.location.hash,"").replace(window.location.origin, '')==window.location.pathname+window.location.search) return;
             document.dispatchEvent(self.onurlchangeEvent);
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
         this.live(this.link, "click", function(e) {
+            let urlObj = new URL(this.href);
+             //return if link is only hash
+            if(this.href.replace(urlObj.hash,"").replace(urlObj.origin, '')==window.location.pathname+window.location.search) return;
             //basically if a link has onclick attribute the route will not work for it
             let clickattr = this.getAttribute('onclick');
             if (clickattr) return;
@@ -106,8 +111,7 @@ class SPA{
                 return;
             }
             if (this.href != window.location.href) {
-                let urlObj = new URL(this.href);;
-                window.history.pushState({}, '',urlObj.href.replace(urlObj.origin, ''));
+                window.history.pushState({}, document.title,urlObj.href.replace(urlObj.origin, ''));
                  document.dispatchEvent(self.onurlchangeEvent);
             }
            
@@ -260,15 +264,15 @@ class SPA{
         let requestStart=this.requestStart;
         let requestComplete=this.requestComplete;
         let requestError=this.requestError;
-        requestStart();
         return new Promise(function(resolve, reject) {
             let url = url_;
             let parameters,response,method,error;
             const xhttp = new XMLHttpRequest();
             xhttp.onerror = function(error){
-                reject(error);
+                requestError(error);
             }
             xhttp.onload = function() {
+                requestStart();
                  response;
                 if (this.readyState == 4 && this.status == 200) {
                     response = this.responseText;
@@ -420,7 +424,6 @@ class SPA{
     getnodeType(node) {
         if(node.nodeType==1) return node.tagName.toLowerCase();
         else return node.nodeType;
-        
     };
      diff(vdom, dom) {
         //if dom has no childs then append the childs from vdom
