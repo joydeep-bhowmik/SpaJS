@@ -264,6 +264,7 @@ class SPA{
         let requestStart=this.requestStart;
         let requestComplete=this.requestComplete;
         let requestError=this.requestError;
+        requestStart();
         return new Promise(function(resolve, reject) {
             let url = url_;
             let parameters,response,method,error;
@@ -272,7 +273,6 @@ class SPA{
                 requestError(error);
             }
             xhttp.onload = function() {
-                requestStart();
                  response;
                 if (this.readyState == 4 && this.status == 200) {
                     response = this.responseText;
