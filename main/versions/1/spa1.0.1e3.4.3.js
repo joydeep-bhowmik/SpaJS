@@ -82,10 +82,9 @@ class SPA{
         this.onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(e){
             //if its  hashchnage the statewill e null
-            console.log(e.state)
-            if(e.state){
+
                 document.dispatchEvent(self.onurlchangeEvent);
-            }
+            
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
