@@ -80,18 +80,20 @@ class SPA{
             });
         }
         this.onurlchangeEvent = new Event("onurlchange");
-        window.addEventListener('popstate',function(){
-            //return if link is only hash
-            console.log((window.location.href.replace(window.location.hash,"").replace(window.location.origin, '')==window.location.pathname+window.location.search))
-            if(window.location.href.replace(window.location.hash,"").replace(window.location.origin, '')==window.location.pathname+window.location.search) return;
-            document.dispatchEvent(self.onurlchangeEvent);
+        window.addEventListener('popstate',function(e){
+            //if its  hashchnage the statewill e null
+            if(e.state){
+                document.dispatchEvent(self.onurlchangeEvent);
+            }
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
         this.live(this.link, "click", function(e) {
             let urlObj = new URL(this.href);
              //return if link is only hash
-            if(this.href.replace(urlObj.hash,"").replace(urlObj.origin, '')==window.location.pathname+window.location.search) return;
+             if(this.getAttribute('href').startsWith('#')){
+                return;
+             }
             //basically if a link has onclick attribute the route will not work for it
             let clickattr = this.getAttribute('onclick');
             if (clickattr) return;
