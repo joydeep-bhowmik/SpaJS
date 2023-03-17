@@ -82,6 +82,7 @@ class SPA{
         this.onurlchangeEvent = new Event("onurlchange");
         window.addEventListener('popstate',function(){
             //return if link is only hash
+            console.log((window.location.href.replace(window.location.hash,"").replace(window.location.origin, '')==window.location.pathname+window.location.search))
             if(window.location.href.replace(window.location.hash,"").replace(window.location.origin, '')==window.location.pathname+window.location.search) return;
             document.dispatchEvent(self.onurlchangeEvent);
         });
