@@ -399,7 +399,8 @@ class SPA{
     }
     getnodeType(node) {
         if(node.nodeType==1) return node.tagName.toLowerCase();
-        else return node.nodeType;
+        if(node.nodeType==3 || node.nodeType==8 ) return 'text';
+        return node.nodeType;
     };
     reorderKeys(vdom,dom){
         console.log(vdom,dom)
@@ -473,8 +474,7 @@ class SPA{
                     //replace
                     dom.childNodes[i].replaceWith(vdom.childNodes[i].cloneNode(true));
                 }
-                if(vdom.childNodes[i].nodeType != 3 || vdom.childNodes[i].nodeType != 8){
-                    console.log('contiuing',vdom.childNodes[i], dom.childNodes[i])
+                if(this.getnodeType(vdom.childNodes[i])!='text'){
                     this.diff(vdom.childNodes[i], dom.childNodes[i])
                 }
             }
