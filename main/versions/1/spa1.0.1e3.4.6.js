@@ -42,7 +42,7 @@ class SPA{
         this.storage={};
         this.scrollPositionsX={};
         this.scrollPositionsY={};
-        this.storage[window.location.href]=document.documentElement.outerHTML;
+        this.storage[this.getCurrentUrl()]=document.documentElement.outerHTML;
         if(args && args['loader']){
             this.loader=args['loader'];
         }
