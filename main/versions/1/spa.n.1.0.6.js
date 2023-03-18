@@ -403,7 +403,6 @@ class SPA{
         return node.nodeType;
     };
     reorderKeys(vdom,dom){
-        console.log(vdom,dom)
         //remove unmatched keys from dom
         for(let i=0;i<dom.children.length;i++){
             let dnode=dom.children[i];
