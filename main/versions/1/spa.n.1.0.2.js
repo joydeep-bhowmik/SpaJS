@@ -145,41 +145,7 @@ class SPA{
     getCurrentUrl(){
         return window.location.href.replace(window.location.hash,' ')
     }
-    reorderKeys(vdom,dom){
-        //remove unmatched keys from dom
-        for(let i=0;i<dom.children.length;i++){
-            let dnode=dom.children[i];
-            if(dnode.hasAttribute('s-key')){
-                let key=dnode.getAttribute('s-key');
-                if(vdom.querySelectorAll(':scope > [s-key="'+key+'"]').length>1){
-                    throw `keys must be unique among siblings. Duplicate key found s-key=${key}`;
-                }
-                //if the key is not present in vdom then remove it
-                if(!vdom.querySelector(':scope > [s-key="'+key+'"]')){
-                    dnode.remove();
-                }
-            }
-        }
-        //adding keys to dom
-        for(let i=0;i<vdom.children.length;i++){
-            let  vnode=vdom.children[i];
-            if( vnode.hasAttribute('s-key')){
-                let key= vnode.getAttribute('s-key');
-                
-                if(dom.querySelector(':scope> [s-key="'+key+'"]')){
 
-                }else{
-                    //if key is not present in dom then add it
-                    let nthIndex=[].indexOf.call(vnode.parentNode.children, vnode);
-                    if(dom.children[nthIndex]){
-                        dom.children[nthIndex].before(vnode.cloneNode(true))
-                    }else{
-                        dom.append(vnode.cloneNode(true))
-                    }
-                }
-            }
-        }
-    }
      updateDOM(url=null,response=null){
         let self=this;
         let vdom;
@@ -435,7 +401,40 @@ class SPA{
         if(node.nodeType==1) return node.tagName.toLowerCase();
         else return node.nodeType;
     };
-     diff(vdom, dom) {
+    reorderKeys(vdom,dom){
+        console.log(vdom,dom)
+        //remove unmatched keys from dom
+        for(let i=0;i<dom.children.length;i++){
+            let dnode=dom.children[i];
+            if(dnode.hasAttribute('s-key')){
+                let key=dnode.getAttribute('s-key');
+                if(vdom.querySelectorAll(':scope > [s-key="'+key+'"]').length>1){
+                    throw `keys must be unique among siblings. Duplicate key found key=${key}`;
+                }
+                //if the key is not present in vdom then remove it
+                if(!vdom.querySelector(':scope > [s-key="'+key+'"]')){
+                    dnode.remove();
+                }
+            }
+        }
+        //adding keys to dom
+        for(let i=0;i<vdom.children.length;i++){
+            let  vnode=vdom.children[i];
+            if( vnode.hasAttribute('s-key')){
+                let key= vnode.getAttribute('s-key');
+                if(!dom.querySelector(':scope> [s-key="'+key+'"]')){
+                    //if key is not present in dom then add it
+                    let nthIndex=[].indexOf.call(vnode.parentNode.children, vnode);
+                    if(dom.children[nthIndex]){
+                        dom.children[nthIndex].before(vnode.cloneNode(true))
+                    }else{
+                        dom.append(vnode.cloneNode(true))
+                    }
+                }
+            }
+        }
+    }
+    diff(vdom, dom) {
         //if dom has no childs then append the childs from vdom
         if (dom.hasChildNodes() == false && vdom.hasChildNodes() == true) {
             for (let i = 0; i < vdom.childNodes.length; i++) {
