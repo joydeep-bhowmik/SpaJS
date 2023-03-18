@@ -129,7 +129,7 @@ class SPA{
             this.script()
         }
         document.addEventListener('onurlchange',async function(){
-            let url=window.location.href;
+            let url=self.getCurrentUrl();
             if(!self.storage[url]){
                 let response=await self.fetch(url).then(function(res){ return res}).catch(function(error){
                     console.error(error);
@@ -141,6 +141,9 @@ class SPA{
                 self.script();
             }
         })
+    }
+    getCurrentUrl(){
+        return window.location.href.replace(window.location.hash,' ')
     }
     reorderKeys(vdom,dom){
         //remove unmatched keys from dom
