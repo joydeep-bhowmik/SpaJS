@@ -189,7 +189,6 @@ class SPA{
         if(!url && response){
             vdom=this.parseHTML(response);
         }
-        this.reorderKeys(vdom,document.documentElement);
         this.diff(vdom,document.documentElement);
         vdom.remove();
         if(this.executeScriptTags){
@@ -444,6 +443,7 @@ class SPA{
                 dom.append(vdom.childNodes[i].cloneNode(true));
             }
         } else {
+            this.reorderKeys(vdom, dom);
             //if dom has extra child
             if (dom.childNodes.length > vdom.childNodes.length) {
                 let count = dom.childNodes.length - vdom.childNodes.length;
