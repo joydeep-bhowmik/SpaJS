@@ -474,6 +474,7 @@ class SPA{
                     dom.childNodes[i].replaceWith(vdom.childNodes[i].cloneNode(true));
                 }
                 if(vdom.childNodes[i].nodeType != 3 || vdom.childNodes[i].nodeType != 8){
+                    console.log('contiuing',vdom.childNodes[i], dom.childNodes[i])
                     this.diff(vdom.childNodes[i], dom.childNodes[i])
                 }
             }
