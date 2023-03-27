@@ -120,7 +120,11 @@ class SPA{
                 window.history.pushState({}, document.title,urlObj.href.replace(urlObj.origin, ''));
                  document.dispatchEvent(self.onurlchangeEvent);
             }
-           
+            setTimeout(() => {
+                window.scroll({
+                    top: '0px',
+                  });
+            }, 0);
         });
 
         if(this.script){
