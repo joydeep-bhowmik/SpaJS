@@ -123,6 +123,7 @@ class SPA{
             //scroll restoration
             if(this.scrollRestoration){
                 if( window.eventType=='pushstate'){
+
                     setTimeout(() => {
                         window.scroll({
                             top: '0px',
@@ -130,7 +131,6 @@ class SPA{
                     }, 0);
                 }else{
                 //setting default scrollbehaviour of browser to manual on pushstate
-                let self=this;
                 var axisY=self.scrollPositionsY[url];
                 var axisX=self.scrollPositionsX[url];
                 if(axisY==undefined){
