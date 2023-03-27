@@ -51,6 +51,10 @@ class SPA{
         if(args && args['scrollRestoration']){
             this.scrollRestoration=args['scrollRestoration'];
         }
+        this.scrollBehavior=null;
+        if(args && args['scrollBehavior']){
+            this.scrollBehavior=args['scrollBehavior'];
+        }
         //save scroll position
         window.addEventListener("scroll",function(){
             let url=self.getCurrentUrl();
@@ -129,6 +133,7 @@ class SPA{
                     setTimeout(() => {
                         window.scroll({
                             top: '0px',
+                            behavior:self.scrollBehavior
                           });
                     }, 0);
                 }else if(window.eventType=='popstate'){
@@ -146,7 +151,8 @@ class SPA{
                 setTimeout(() => {
                     window.scroll({
                         top: axisY,
-                        left:axisX
+                        left:axisX,
+                        behavior:self.scrollBehavior
                       });
                 }, 0);
                 }
