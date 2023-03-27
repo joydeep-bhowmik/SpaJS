@@ -121,9 +121,10 @@ class SPA{
                 self.script();
             }
             //scroll restoration
-            if(this.scrollRestoration){
+            if(self.scrollRestoration){
+                
                 if( window.eventType=='pushstate'){
-
+              
                     setTimeout(() => {
                         window.scroll({
                             top: '0px',
