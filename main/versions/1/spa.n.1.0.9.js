@@ -59,35 +59,16 @@ class SPA{
             self.scrollPositionsY[document.URL]=window.pageYOffset;
         });
 
-        this.onurlchangeEvent = new Event("onurlchange");
+        this.onurlchangeEvent = new Event("onurlchange",{bubbles: true});
         let current_hash=window.location.hash;
         window.addEventListener('popstate',function(e){
+            window.eventType='popstate';
             //if its  hashchnage the statewill e null
             if (e.target.location.hash ==current_hash ){
                 document.dispatchEvent(self.onurlchangeEvent);
              } else {
-               current_hash = ev.target.location.hash;
-             }
-             if(this.scrollRestoration){
-                //setting default scrollbehaviour of browser to manual on pushstate
-                let self=this;
-                var url=document.URL;
-                var axisY=self.scrollPositionsY[url];
-                var axisX=self.scrollPositionsX[url];
-                if(axisY==undefined){
-                    axisY=0;
-                }
-                if(axisX==undefined){
-                    axisX=0;
-                }
-                setTimeout(() => {
-                    window.scroll({
-                        top: axisY,
-                        left:axisX
-                      });
-                }, 0);
-            }
-            
+               current_hash = e.target.location.hash;
+             }  
         });
         //let spapercentComplete = new Event("spapercentComplete");
         //if clicked on mentioned link
@@ -117,20 +98,17 @@ class SPA{
                 return;
             }
             if (this.href != window.location.href) {
+                window.eventType='pushstate';
                 window.history.pushState({}, document.title,urlObj.href.replace(urlObj.origin, ''));
                  document.dispatchEvent(self.onurlchangeEvent);
+                 
             }
-            setTimeout(() => {
-                window.scroll({
-                    top: '0px',
-                  });
-            }, 0);
         });
 
         if(this.script){
             this.script()
         }
-        document.addEventListener('onurlchange',async function(){
+        document.addEventListener('onurlchange',async function(e){
             let url=self.getCurrentUrl();
             if(!self.storage[url]){
                 let response=await self.fetch(url).then(function(res){ return res}).catch(function(error){
@@ -141,6 +119,33 @@ class SPA{
             self.updateDOM(url);
             if(self.script){
                 self.script();
+            }
+            //scroll restoration
+            if(this.scrollRestoration){
+                if( window.eventType=='pushstate'){
+                    setTimeout(() => {
+                        window.scroll({
+                            top: '0px',
+                          });
+                    }, 0);
+                }else{
+                //setting default scrollbehaviour of browser to manual on pushstate
+                let self=this;
+                var axisY=self.scrollPositionsY[url];
+                var axisX=self.scrollPositionsX[url];
+                if(axisY==undefined){
+                    axisY=0;
+                }
+                if(axisX==undefined){
+                    axisX=0;
+                }
+                setTimeout(() => {
+                    window.scroll({
+                        top: axisY,
+                        left:axisX
+                      });
+                }, 0);
+                }
             }
         })
     }
