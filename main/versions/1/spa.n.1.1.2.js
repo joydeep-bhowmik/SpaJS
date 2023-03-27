@@ -53,10 +53,11 @@ class SPA{
         }
         //save scroll position
         window.addEventListener("scroll",function(){
+            let url=self.getCurrentUrl();
             //horizontal scroll
-            self.scrollPositionsX[document.URL]=window.pageXOffset;
+            self.scrollPositionsX[url]=window.pageXOffset;
             //vertical scroll
-            self.scrollPositionsY[document.URL]=window.pageYOffset;
+            self.scrollPositionsY[url]=window.pageYOffset;
         });
 
         this.onurlchangeEvent = new Event("onurlchange",{bubbles: true});
@@ -122,7 +123,7 @@ class SPA{
             }
             //scroll restoration
             if(self.scrollRestoration){
-                
+                console.log(window.eventType)
                 if( window.eventType=='pushstate'){
               
                     setTimeout(() => {
@@ -130,16 +131,18 @@ class SPA{
                             top: '0px',
                           });
                     }, 0);
-                }else{
+                }else if(window.eventType=='popstate'){
                 //setting default scrollbehaviour of browser to manual on pushstate
                 var axisY=self.scrollPositionsY[url];
                 var axisX=self.scrollPositionsX[url];
+                console.log(axisY,axisX,url)
                 if(axisY==undefined){
                     axisY=0;
                 }
                 if(axisX==undefined){
                     axisX=0;
                 }
+                
                 setTimeout(() => {
                     window.scroll({
                         top: axisY,
