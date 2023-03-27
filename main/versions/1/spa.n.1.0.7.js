@@ -58,10 +58,19 @@ class SPA{
             //vertical scroll
             self.scrollPositionsY[document.URL]=window.pageYOffset;
         });
-        if(this.scrollRestoration){
-            //setting default scrollbehaviour of browser to manual on pushstate
-            let self=this;
-            document.addEventListener("onurlchange", function() {
+
+        this.onurlchangeEvent = new Event("onurlchange");
+        let current_hash=window.location.hash;
+        window.addEventListener('popstate',function(e){
+            //if its  hashchnage the statewill e null
+            if (e.target.location.hash ==current_hash ){
+                document.dispatchEvent(self.onurlchangeEvent);
+             } else {
+               current_hash = ev.target.location.hash;
+             }
+             if(this.scrollRestoration){
+                //setting default scrollbehaviour of browser to manual on pushstate
+                let self=this;
                 var url=document.URL;
                 var axisY=self.scrollPositionsY[url];
                 var axisX=self.scrollPositionsX[url];
@@ -77,18 +86,7 @@ class SPA{
                         left:axisX
                       });
                 }, 0);
-            });
-        }
-        this.onurlchangeEvent = new Event("onurlchange");
-        let current_hash=window.location.hash;
-        window.addEventListener('popstate',function(e){
-            //if its  hashchnage the statewill e null
-            if (e.target.location.hash ==current_hash ){
-                document.dispatchEvent(self.onurlchangeEvent);
-             } else {
-               current_hash = ev.target.location.hash;
-             }
-               
+            }
             
         });
         //let spapercentComplete = new Event("spapercentComplete");
