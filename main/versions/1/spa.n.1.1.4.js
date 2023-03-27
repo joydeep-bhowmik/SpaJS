@@ -35,9 +35,9 @@ class SPA{
         if(args && args['script']){
             this.script=args['script'];
         }
-        this.executeScriptTags=false;
-        if(args && args['executeexecuteScriptTags']){
-            this.executeScriptTags=args['executeexecuteScriptTags'];
+        this.executeScriptEl=false;
+        if(args && args['executeScriptEl']){
+            this.executeScriptEl=args['executeScriptEl'];
         }
         this.storage={};
         this.scrollPositionsX={};
@@ -127,7 +127,6 @@ class SPA{
             }
             //scroll restoration
             if(self.scrollRestoration){
-                console.log(window.eventType)
                 if( window.eventType=='pushstate'){
               
                     setTimeout(() => {
@@ -174,8 +173,9 @@ class SPA{
         }
         this.diff(vdom,document.documentElement);
         vdom.remove();
-        if(this.executeScriptTags){
-            document.querySelectorAll('script').forEach(function(scriptTag,i){
+        if(this.executeScriptEl){
+            let script="";
+            document.querySelectorAll(this.executeScriptEl).forEach(function(scriptTag,i){
                 if(scriptTag.hasAttribute('spa-script')) return;
                 if(scriptTag.hasAttribute('src')){
                     let parentNode=scriptTag.parentNode;
@@ -192,10 +192,10 @@ class SPA{
                         parentNode.append(newScriptTag)
                     }
                 }else{
-                    let script=scriptTag.innerHTML;
-                    eval(script);
+                    script+=scriptTag.innerHTML;
                 }
-            })
+            });
+            eval(script);
         }
     }
 
