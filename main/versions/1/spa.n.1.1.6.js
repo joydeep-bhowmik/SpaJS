@@ -115,10 +115,6 @@ class SPA{
         }
         document.addEventListener('onurlchange',async function(e){
             let url=self.getCurrentUrl();
-            //horizontal scroll
-            self.scrollPositionsX[url]=window.pageXOffset;
-            //vertical scroll
-            self.scrollPositionsY[url]=window.pageYOffset;
             if(!self.storage[url]){
                 let response=await self.fetch(url).then(function(res){ return res}).catch(function(error){
                     console.error(error);
@@ -139,6 +135,10 @@ class SPA{
                             behavior:self.scrollBehavior
                           });
                     }, 0);
+                    //horizontal scroll
+                    self.scrollPositionsX[url]=window.pageXOffset;
+                    //vertical scroll
+                    self.scrollPositionsY[url]=window.pageYOffset;
                 }else if(window.eventType=='popstate'){
                 //setting default scrollbehaviour of browser to manual on pushstate
                 var axisY=self.scrollPositionsY[url];
