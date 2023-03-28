@@ -115,6 +115,10 @@ class SPA{
         }
         document.addEventListener('onurlchange',async function(e){
             let url=self.getCurrentUrl();
+            //horizontal scroll
+            self.scrollPositionsX[url]=window.pageXOffset;
+            //vertical scroll
+            self.scrollPositionsY[url]=window.pageYOffset;
             if(!self.storage[url]){
                 let response=await self.fetch(url).then(function(res){ return res}).catch(function(error){
                     console.error(error);
@@ -224,6 +228,13 @@ class SPA{
     bindForm(){
         let self=this;
         this.live(this.form,'submit',async function(e){
+            //if link origin is not same then redirect to the mentioned link
+            //the link
+            let refLocation = (new URL(this.getAttribute('action')));
+            //if provided link host name is same as current host name
+            if (refLocation.hostname != location.hostname) {
+                return;
+            }
             e.preventDefault();
             let action=this.getAttribute('action');
             let method=this.getAttribute('method');
